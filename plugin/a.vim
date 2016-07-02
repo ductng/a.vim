@@ -107,7 +107,7 @@ call <SID>AddAlternateExtensionMapping('aspx', 'aspx.cs,aspx.vb')
 " Setup default search path, unless the user has specified
 " a path in their [._]vimrc. 
 if (!exists('g:alternateSearchPath'))
-  let g:alternateSearchPath = 'sfr:../source,sfr:../src,sfr:../include,sfr:../inc'
+  let g:alternateSearchPath = 'sfr:../source,sfr:../src,sfr:../include,sfr:../inc,sfr:../,sfr:./)'
 endif
 
 " If this variable is true then a.vim will not alternate to a file/buffer which
@@ -355,10 +355,25 @@ function! EnumerateFilesByExtensionInPath(baseName, extension, pathList, relPath
    let enumeration = ""
    let filepath = ""
    let m = 1
-   let pathListLen = strlen(a:pathList)
+   let pathList = a:pathList
+   let paths = split(pathList,",")
+   let allpaths = []
+   for p in paths
+       call add ( allpaths , p )
+       let prfx = strpart(p, 0, 4)
+       if (prfx == "sfr:")
+           let subpath = strpart(p, 4)
+           let searchpaths = split(globpath(subpath,"*"))
+           for spa in searchpaths
+               call add ( allpaths , spa )
+           endfor
+       endif
+   endfor
+   let pathList = join(allpaths,",")
+   let pathListLen = strlen(pathList)
    if (pathListLen > 0)
       while (1)
-         let pathSpec = <SID>GetNthItemFromList(a:pathList, m) 
+         let pathSpec = <SID>GetNthItemFromList(pathList, m) 
          if (pathSpec != "")
             let path = <SID>ExpandAlternatePath(pathSpec, a:relPathBase)
             let pe = EnumerateFilesByExtension(path, a:baseName, a:extension)

@@ -1,3 +1,12 @@
+This is a fork of https://github.com/vim-scripts/a.vim.
+
+I need to add more search paths, especially sub directories are searched now for all paths given with "srf:".
+
+2 July 2016,
+Duc
+
+Here is the original README:
+
 This is a mirror of http://www.vim.org/scripts/script.php?script_id=31
 
 A few of quick commands to swtich between source files and header files quickly.
@@ -19,3 +28,5 @@ A few of quick commands to swtich between source files and header files quickly.
 E.g. if you are editing foo.c and need to edit foo.h simply execute :A and you will be editting foo.h, to switch back to foo.c execute :A again. 
 
 Can be configured to support a variety of languages. Builtin support for C, C++ and ADA95
+
+
